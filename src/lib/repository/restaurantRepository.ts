@@ -1,7 +1,7 @@
 import { apiFetch } from "../configs/api-config";
 import type { Restaurant, RestaurantUpdate } from "@models/restaurant";
 
-const RESTAURANTS_ENDPOINT = "/restaurants";
+const RESTAURANTS_ENDPOINT = "/Food";
 
 export interface GetAllRestaurantsOptions {
   search?: string;
@@ -13,7 +13,7 @@ export interface GetAllRestaurantsOptions {
 export async function getAllRestaurants(options: GetAllRestaurantsOptions = {}): Promise<Restaurant[]> {
   const { search, filters, page, pageSize } = options;
   const params = {
-    ...(search ? { search } : {}),
+    ...(search ? { name: search } : {}),
     ...(page !== undefined ? { page } : {}),
     ...(pageSize !== undefined ? { pageSize } : {}),
     ...(filters ?? {}),

@@ -1,103 +1,118 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import RestaurantHeader from "@/components/RestaurantHeader";
+import RestaurantHero from "@/components/RestaurantHero";
+import RestuarantCard from "@/components/RestuarantCard";
+import RestaurantFooter from "@/components/RestaurantFooter";
+import MealFormModal from "@/components/modals/MealForm";
+import DeleteConfirm from "@/components/modals/DeleteConfirm";
+import type { Restaurant } from "@models/restaurant";
+import { getAllRestuarant, updateRestuarant, deleteRestuarant } from "@repository/restaurantRepository";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [items, setItems] = useState<Restaurant[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
+  const [editing, setEditing] = useState<Restaurant | null>(null);
+  const [adding, setAdding] = useState(false);
+  const [deleting, setDeleting] = useState<Restaurant | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  async function loadMeals(term?: string) {
+    setLoading(true);
+    try {
+      const data = await getAllRestuarant(term ? { search: term } : {});
+      console.log(">>>>>>>>>>>>>>>>> Data", data);
+      setItems(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadMeals();
+  }, []);
+
+  const title = useMemo(() => (search ? `Featured Meals for "${search}"` : "Featured Meals"), [search]);
+
+  return (
+    <div className="min-h-screen bg-white text-gray-900">
+      <RestaurantHeader onAddMeal={() => setAdding(true)} />
+
+      <main className="">
+        <div className="z-10 overflow-hidden ">
+        <RestaurantHero
+          onSearch={(term) => {
+            setSearch(term);
+            loadMeals(term);
+          }}
+        />
         </div>
+        <div className="px-48 z-20   ">
+        <h2 className="mt-10 text-center text-xl font-bold md:text-2xl">{title}</h2>
+
+        {loading ? (
+          <div className="py-12 text-center text-gray-500">Loading...</div>
+        ) : (
+          <section className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((item) => (
+              <RestuarantCard
+                key={item.id}
+                restaurant={item}
+                onEdit={(r) => setEditing(r)}
+                onDelete={(r) => setDeleting(r)}
+              />
+            ))}
+            </section>
+          )}
+        </div>
+
+        {items.length > 0 && (
+          <div className="mt-8 flex justify-center">
+            <button
+              type="button"
+            className="inline-flex items-center rounded-[14px] bg-gradient-to-r from-orange-400 to-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-lg transition hover:from-orange-500 hover:to-amber-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+              onClick={() => loadMeals(search)}
+            >
+              Load more
+            </button>
+          </div>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      <RestaurantFooter />
+
+      {/* Modals */}
+      <MealFormModal
+        open={Boolean(adding || editing)}
+        initial={editing}
+        onClose={() => {
+          setAdding(false);
+          setEditing(null);
+        }}
+        onSubmit={async (payload) => {
+          // Only update is implemented in repository; integrate create here when available
+          if (editing) {
+            await updateRestuarant(editing.id, payload);
+            await loadMeals(search);
+          } else {
+            console.info("Create endpoint not implemented in repository. Payload:", payload);
+          }
+        }}
+      />
+
+      <DeleteConfirm
+        open={Boolean(deleting)}
+        onClose={() => setDeleting(null)}
+        onConfirm={async () => {
+          if (!deleting) return;
+          await deleteRestuarant(deleting.id);
+          setDeleting(null);
+          await loadMeals(search);
+        }}
+      />
     </div>
   );
 }
