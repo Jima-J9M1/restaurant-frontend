@@ -20,6 +20,7 @@
     ],
     "paths": {
       "@restaurant/*": ["./src/*"],
+      "@/*": ["./src/*"],
       "@models/*": ["./src/models/*"],
       "@repository/*": ["./src/lib/repository/*"]
     }
