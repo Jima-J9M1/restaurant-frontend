@@ -44,7 +44,7 @@ export default function RestuarantCard({
   return (
     <div
       className={[
-        "relative rounded-2xl border bg-white shadow-sm overflow-hidden",
+        "relative rounded-2xl bg-white shadow-sm overflow-hidden",
         "transition hover:shadow-md",
         className ?? "",
       ].join(" ")}
@@ -52,7 +52,7 @@ export default function RestuarantCard({
       <div className="relative h-56 w-full overflow-hidden">
         {/* Image */}
         <Image
-          src={restaurant.avatar}
+          src={restaurant.avatar ?? "/images/default-image.png"}
           alt={restaurant.name}
           fill
           className="object-cover"
@@ -105,7 +105,7 @@ export default function RestuarantCard({
                 {menuOpen && (
                   <div
                     role="menu"
-                    className="absolute right-0 z-10 mt-2 w-32 overflow-hidden rounded-md border bg-white py-1 text-sm shadow-lg"
+                    className="absolute right-0 z-50 mt-2 w-32 overflow-hidden rounded-md bg-white py-1 text-sm shadow-lg"
                   >
                     <button
                       role="menuitem"
