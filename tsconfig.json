@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@restaurant/*": ["./src/*"]
+      "@restaurant/*": ["./src/*"],
+      "@models/*": ["./src/models/*"],
+      "@repository/*": ["./src/lib/repository/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
