@@ -44,7 +44,7 @@ export default function RestuarantCard({
   return (
     <div
       className={[
-        "relative rounded-2xl bg-white shadow-sm overflow-hidden",
+        "relative rounded-2xl bg-white shadow-sm",
         "transition hover:shadow-md",
         className ?? "",
       ].join(" ")}
