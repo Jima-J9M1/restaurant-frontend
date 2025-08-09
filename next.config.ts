@@ -92,10 +92,46 @@ import type { NextConfig } from "next";
 ]
 */
 const nextConfig: NextConfig = {
-  images: {
-    // add all the domains based on the above comment list
-    domains: ["localhost", "192.168.1.100", "images.pexels.com", "images.unsplash.com", "t3.ftcdn.net", "www.foodiesfeed.com", "media.istockphoto.com", "foodwagen.netlify.app", "picsum.photos", "images.unsplash.com"],
-  },
+  images:{
+  remotePatterns: [
+    {
+      protocol: "https",
+      hostname: "images.pexels.com",
+    },
+    {
+      protocol: "https",
+      hostname: "images.unsplash.com",
+    },
+    {
+      protocol: "https",
+      hostname: "t3.ftcdn.net",
+    },
+    {
+      protocol: "https",
+      hostname: "www.foodiesfeed.com",
+    },
+    {
+      protocol: "https",
+      hostname: "media.istockphoto.com",
+    },
+    {
+      protocol: "https",
+      hostname: "foodwagen.netlify.app",
+    },
+    {
+      protocol: "https",
+      hostname: "picsum.photos",
+    },
+    {
+      protocol: "https",
+      hostname: "cdn.jsdelivr.net",
+    },
+    {
+      protocol: "https",
+      hostname: "192.168.1.100",
+    },
+  ],
+}
   /* config options here */
 };
 

@@ -1,5 +1,3 @@
-import Image from "next/image";
-import { IMAGES } from "@restaurant/lib/constant/variables";
 
 interface RestaurantFooterProps {
   brand?: string;

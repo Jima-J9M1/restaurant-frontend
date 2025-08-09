@@ -79,7 +79,7 @@ export default function RestaurantHero({ onSearch }: RestaurantHeroProps) {
         {/* Right: hero bowl image */}
         <div className="relative col-span-12 hidden md:col-span-5 md:block">
           <div className="relative h-[360px] w-full lg:h-[420px] top-30 z-10">
-            <Image src={IMAGES.heroImage} alt="Food" fill className="object-contain" priority />
+            <Image src={IMAGES.heroImage} width={1000} height={1000} alt="Food" className="object-contain" priority />
           </div>
         </div>
       </div>

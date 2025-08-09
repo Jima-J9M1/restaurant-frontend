@@ -9,7 +9,6 @@ interface RestaurantHeaderProps {
 }
 
 export default function RestaurantHeader({
-  title = "FoodWagen",
   onAddMeal,
 }: RestaurantHeaderProps) {
   return (

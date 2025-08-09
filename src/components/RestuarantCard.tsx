@@ -75,11 +75,13 @@ export default function RestuarantCard({
       <div className="p-4">
         <div className="flex items-start gap-3">
           {/* Logo */}
-          <img
+          <Image
             src={restaurant.logo}
             alt={`${restaurant.name} logo`}
             className="h-10 w-10 flex-none rounded-md object-cover border"
             loading="lazy"
+            width={1000}
+            height={1000}
           />
 
           <div className="min-w-0 flex-1">

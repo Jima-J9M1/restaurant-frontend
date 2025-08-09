@@ -5,8 +5,8 @@ import { BASE_URL } from "../constant/variables";
   interface fetchConfig {
     method: RequestMethod;
     headers?: HeadersInit;
-    body?: any;
-    params?: Record<string, any>;
+    body?: unknown;
+    params?: Record<string, unknown>;
   }
   
   const API_BASE_URL = `${BASE_URL}`;
@@ -68,9 +68,13 @@ import { BASE_URL } from "../constant/variables";
       console.log('API Response:', result);
       return result as T;
       
-    } catch (error: any) {
-      console.error('API Error:', error?.message);
-      throw error;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('API Error:', error.message);
+      } else {
+        console.error('API Error:', String(error));
+      }
+      throw error as unknown;
     }
   };
   
